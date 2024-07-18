@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>do.shit</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="imgs/favicon.ico" />
+  </head>
+  <body>
+    <main id="main" role="main">
+      <div id="header1">
+        <img src="imgs/nashgoberlogot.png" alt="Nash Gober" />
+      </div>
+      <hr />
+      <div id="icons-scroll">
+        <div class="icons rot-one">
+          <div class="icon-wrap">
+            <div class="icon blog">
+              <img src="imgs/IMG_0962.JPG" alt="blog" />
+            </div>
+            <div class="icon-text">blog</div>
+          </div>
+        </div>
+        <div class="icons rot-one">
+          <div class="icon-wrap">
+            <div class="icon pics">
+              <img src="imgs/IMG_1013.JPG" alt="pics" />
+            </div>
+            <div class="icon-text">pictures</div>
+          </div>
+        </div>
+        <div class="icons rot-one">
+          <div class="icon-wrap">
+            <div class="icon vids">
+              <img src="imgs/IMG_1019.JPG" alt="vids" />
+            </div>
+            <div class="icon-text">videos</div>
+          </div>
+        </div>
+        <div class="icons rot-one">
+          <div class="icon-wrap">
+            <div class="icon projects">
+              <img src="imgs/IMG_1279.JPG" alt="projects" />
+            </div>
+            <div class="icon-text">projects</div>
+          </div>
+        </div>
+        <div class="icons rot-one">
+          <div class="icon-wrap">
+            <div class="icon randweb">
+              <img src="imgs/IMG_1654.JPG" alt="randweb" />
+            </div>
+            <div class="icon-text">takethechance</div>
+          </div>
+        </div>
+        <div class="icons rot-one">
+          <div class="icon-wrap">
+            <div class="icon aboutme">
+              <img src="imgs/IMG_1655.JPG" alt="blog" />
+            </div>
+            <div class="icon-text">ME :D</div>
+          </div>
+        </div>
+        <div class="icons rot-one">
+          <div class="icon-wrap">
+            <div class="icon thingsilike">
+              <img src="imgs/IMG_1656.JPG" alt="blog" />
+            </div>
+            <div class="icon-text">thingsilike</div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div id="footer">
+        <div class="socials" id="insta">
+          <img src="imgs/icons8-instagram-64.png" alt="insta" />
+        </div>
+        <div class="socials" id="youtube">
+          <img src="imgs/icons8-youtube-64.png" alt="youtube" />
+        </div>
+        <div class="socials" id="twitter">
+          <img src="imgs/icons8-twitter-64.png" alt="twitter" />
+        </div>
+        <div class="socials" id="pinterest">
+          <img src="imgs/icons8-pinterest-64.png" alt="venmo" />
+        </div>
+        <div class="socials" id="linkedin">
+          <img src="imgs/icons8-linkedin-64.png" alt="linkedin" />
+        </div>
+      </div>
+    </main>
+    <script>
+      function debounce(fn, delay = 100, options = {}) {
+        let timerId;
+        return (...args) => {
+          const { leading = false, trailing = true } = options;
+          const callNow = leading && !timerId;
+          clearTimeout(timerId);
+          timerId = setTimeout(() => {
+            if (trailing || callNow) {
+              fn(...args);
+            }
+            timerId = undefined;
+          }, delay);
+          if (callNow) {
+            fn(...args);
+          }
+        };
+      }
+      let scrollElement = document.getElementById("icons-scroll");
+      let iconRows = Array.from(scrollElement.querySelectorAll(".icons"));
+
+      function handleIconRows() {
+        const scrollRect = scrollElement.getBoundingClientRect();
+        const scrollCenter = (scrollRect.left + scrollRect.right) / 2;
+        scrollElement = document.getElementById("icons-scroll");
+        iconRows = Array.from(scrollElement.querySelectorAll(".icons"));
+
+        iconRows.forEach((iconRow) => {
+          const iconRect = iconRow.getBoundingClientRect();
+          const iconCent = (iconRect.right + iconRect.left) / 2;
+          const distfromcenter = Math.abs(iconCent - scrollCenter);
+          const maxScale = 1.0;
+          const minScale = 0.5;
+          const scale = 1 - (distfromcenter / scrollCenter) * (1 - minScale);
+          console.log(scale);
+          iconRow.style.setProperty("transform", `scale(${scale})`);
+        });
+      }
+
+      const wrapDebounce = (fn) => debounce(fn, 0, { leading: true });
+      handleIconRows();
+      scrollElement.addEventListener("scroll", wrapDebounce(handleIconRows), {
+        passive: true,
+      });
+
+      window.addEventListener("resize", handleIconRows);
+
+      const leftIndex = 0;
+      const rightIndex = 4;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        iconRows.forEach((iconR) => {
+          const cloneicon = iconR.cloneNode(true);
+          cloneicon.classList.remove("rot-one");
+          cloneicon.classList.add("rot-two");
+          scrollElement.appendChild(cloneicon);
+        });
+      });
+    </script>
+  </body>
+</html>
